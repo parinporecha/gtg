@@ -213,7 +213,6 @@ setup(
                           ],
     'GTG.plugins.geolocalized_tasks': [
                           'adjustment.ui',
-                          'context_menu.ui',
                           'preferences.ui',
                           'set_task_location.ui',
                           'tag_location.ui'
