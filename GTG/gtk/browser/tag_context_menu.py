@@ -55,6 +55,7 @@ class TagContextMenu(Gtk.Menu):
             self.mi_cc.set_label(_("Edit Tag..."))
             self.append(self.mi_cc)
             self.mi_cc.connect('activate', self.on_mi_cc_activate)
+
             if self.tag.is_search_tag():
                 self.mi_del = Gtk.MenuItem()
                 self.mi_del.set_label(_("Delete"))
