@@ -41,6 +41,7 @@ class TagContextMenu(Gtk.Menu):
         self.tag = tag
         # Build up the menu
         self.set_tag(tag)
+        self.custom_menuitems = []
         self.__build_menu()
 
     def __build_menu(self):
@@ -48,13 +49,16 @@ class TagContextMenu(Gtk.Menu):
         # Reset the widget
         for i in self:
             self.remove(i)
-            i.destroy()
+            if i not in self.custom_menuitems:
+                i.destroy()
         if self.tag is not None:
             # Color chooser FIXME: SHOULD BECOME A COLOR PICKER
             self.mi_cc = Gtk.MenuItem()
             self.mi_cc.set_label(_("Edit Tag..."))
             self.append(self.mi_cc)
             self.mi_cc.connect('activate', self.on_mi_cc_activate)
+            for custom_mi in self.custom_menuitems:
+                self.append(custom_mi)
 
             if self.tag.is_search_tag():
                 self.mi_del = Gtk.MenuItem()
@@ -69,6 +73,16 @@ class TagContextMenu(Gtk.Menu):
         """Update the context menu items using the tag attributes."""
         self.tag = tag
         self.__build_menu()
+
+    def add_custom_menuitem(self, label, callback):
+        custom_mi = Gtk.MenuItem()
+        custom_mi.set_label(_(label))
+        custom_mi.connect('activate', callback)
+        self.custom_menuitems.append(custom_mi)
+        return custom_mi
+
+    def remove_custom_menuitem(self, custom_mi):
+        self.custom_menuitems.remove(custom_mi)
 
     ### CALLBACKS #############################################################
     def on_mi_cc_activate(self, widget):
